@@ -2,18 +2,18 @@
 import pLimit from "p-limit"
 import Fs from "fs"
 import Path from "path"
-import toml from "toml"
-import process from "process"
+import Toml from "toml"
+import Process from "process"
 import { exec } from "child_process"
 import { parse } from "id3-parser"
 import { fileURLToPath } from "url"
 
-// In case the .bat file is moved elsewhere, overwrite working directory
+// In case this is called from a different directory, overwrite working directory
 const __filename = fileURLToPath(import.meta.url)
-process.chdir(Path.dirname(__filename))
+Process.chdir(Path.dirname(__filename))
 
 // Config Constants
-const Config = toml.parse(Fs.readFileSync("config.toml"))
+const Config = Toml.parse(Fs.readFileSync("config.toml"))
 
 const musicdirectory = Config.Files.music_directory
 const playlistlinksfile = Config.Files.playlistlinks_file
@@ -70,7 +70,7 @@ async function start(){
                 // Check if a download-archived video is not in the playlist
                 let currentvideosfile
                 try{
-                    currentvideosfile = Fs.readFileSync(`${logdirectory.slice(2)}/${playlisttitle}-archive.txt`,"utf-8")
+                    currentvideosfile = Fs.readFileSync(`${logdirectory}/${playlisttitle}-archive.txt`,"utf-8")
                 }catch{}
                 if (currentvideosfile){
                     let currentvideos = currentvideosfile
@@ -89,7 +89,7 @@ async function start(){
 
                             // Remove from download-archive
                             currentvideosfile = currentvideosfile.replace(idcombo,"").split(/\r?\n/).filter(n => n.trim() != "").join("\n")
-                            Fs.writeFileSync(`${logdirectory.slice(2)}/${playlisttitle}-archive.txt`,currentvideosfile)
+                            Fs.writeFileSync(`${logdirectory}/${playlisttitle}-archive.txt`,currentvideosfile)
 
                             // Find video file via metadata and remove
                             Fs.readdir(`${musicdirectory}/${playlisttitle}`, (e, files) => {
@@ -122,7 +122,7 @@ async function start(){
         
                 const ytdlp_args = [
                     fileformat,
-                    `--download-archive "${logdirectory.slice(2)}/${playlisttitle}-archive.txt"`,
+                    `--download-archive "${logdirectory}/${playlisttitle}-archive.txt"`,
                     `--parse-metadata "${parsemetadata_arg}"`,
                     `--output "${output_arg}"`,
                     "--embed-metadata",
@@ -143,7 +143,7 @@ async function start(){
                     console.log(stdout)
                     resolve()
                 })
-                downloadprocess.stdout.pipe(process.stdout)
+                downloadprocess.stdout.pipe(Process.stdout)
             })
         })
     }
@@ -172,7 +172,7 @@ async function start(){
                 console.log(stdout)
                 resolve()
             })
-            normalizeprocess.stdout.pipe(process.stdout)
+            normalizeprocess.stdout.pipe(Process.stdout)
         })
     }
 
