@@ -1,0 +1,17 @@
+{
+  "name": "ytdlp-node-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Sukadia",
+  "license": "ISC",
+  "dependencies": {
+    "id3-parser": "^2.0.0",
+    "p-limit": "^4.0.0",
+    "toml": "^3.0.0"
+  }
+}

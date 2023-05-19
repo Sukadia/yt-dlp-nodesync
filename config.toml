@@ -1,0 +1,34 @@
+[ Files ]
+    # The path to the directory where all the downloaded playlists will be.
+    music_directory = "./Music"
+
+    # The path to the file where all the playlists are linked.
+    playlistlinks_file = "./playlistlinks.txt"
+
+[ Functionality ]
+    # The number of playlists to download at a time.
+    concurrent_downloads = 5
+
+    # The maximum number of nested directories.
+    # Ex: "Genre/Rock/Action" needs 3 directories.
+    max_nested_directories = 10
+
+    # Whether to normalize the volume of new audio files.
+    normalize_audio = true
+
+
+
+## More Technical Stuff ##
+
+[ yt-dlp ]
+    # File name output formatting to pass into --output.
+    output_format = "[%(uploader)s] %(title)s.%(ext)s"
+
+    # File formatting arguments to pass into yt-dlp.
+    file_format = "-x -f \"bestaudio\" --audio-format mp3"
+
+    # Other arguments to pass into yt-dlp.
+    other_args = [
+        "--extractor-args youtube:skip=translated_subs;youtubetab:skip=webpage;youtube:skip=hls,dash"
+    ]
+
