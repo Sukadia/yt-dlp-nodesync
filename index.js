@@ -1,10 +1,16 @@
-// Dependenciesdirectory
+// Dependencies
 import pLimit from "p-limit"
 import Fs from "fs"
 import Path from "path"
 import toml from "toml"
+import process from "process"
 import { exec } from "child_process"
 import { parse } from "id3-parser"
+import { fileURLToPath } from "url"
+
+// In case the .bat file is moved elsewhere, overwrite working directory
+const __filename = fileURLToPath(import.meta.url)
+process.chdir(Path.dirname(__filename))
 
 // Config Constants
 const Config = toml.parse(Fs.readFileSync("config.toml"))
