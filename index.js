@@ -163,13 +163,13 @@ async function start(){
                 // yt-dlp finished, close promise
                 downloadprocess.on("close", (code) => {
                     multibar.remove(playlistbar)
-                    mainbar.increment()
                     if (code == 0){
+                        mainbar.increment()
                         resolve()
                         return
                     }else{
-                        reject()
-                        return
+                        // BUG: Occasionally error will not fire but close will, saying it was unsuccessful. 
+                        reject("UNKNOWN, likely \"incomplete data received\"")
                     }
                 })
 
@@ -212,6 +212,8 @@ async function start(){
         console.log(`\nSuccessfully synced ${playlistlinks.length} playlists!`)
     }
 
+    console.log("")
+
     if (normalizeaudio){
         const normalizebar = new Progress.SingleBar({
             format: `{bar} | Normalized {value}/{total} audio files`
@@ -240,6 +242,11 @@ async function start(){
                 }else{
                     reject()
                 }
+            })
+
+            normalizeprocess.on("error", (error) => {
+                reject(error)
+                return
             })
         })
     }
