@@ -223,6 +223,7 @@ async function start(){
 
         await new Promise((resolve,reject) => {
             let normalizeprocess = spawn(`rsgain easy -S -p "./no_album.ini" "${musicdirectory}"`, [], { shell: true, stdio: "pipe" })
+            let numskipped = 0
 
             normalizeprocess.stdout.on("data", (data) => {
                 data = data.toString()
@@ -231,12 +232,16 @@ async function start(){
                     normalizebar.increment(numnormalized)
                 }
 
-                let numskipped = data.match(/Skipped ([\s\S]*?) files/g)
-                if (numskipped) normalizebar.increment(Number(numskipped.toString().split(" ")[1]))
+                let skippedtext = data.match(/Skipped ([\s\S]*?) files/g) || data.match(/Skipped: ([\s\S]*?)/g)
+                if (skippedtext){
+                    numskipped = parseInt(skippedtext[0].split(" ")[1])
+                    normalizebar.increment(numskipped)
+                }
             })
 
             normalizeprocess.stdout.on("close", (code) => {
                 normalizebar.stop()
+                if (numskipped) console.log(`> Skipped ${numskipped} song${numskipped == 1 ? "" : "s"} because ${numskipped == 1 ? "it was" : "they were"} already normalized.`)
                 if (code == 0){
                     resolve()
                 }else{
