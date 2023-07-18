@@ -8,6 +8,7 @@ import Progress from "cli-progress"
 import { exec, spawn } from "child_process"
 import { parse } from "id3-parser"
 import { fileURLToPath } from "url"
+import { readline } from "readline"
 
 // In case this is called from a different directory, overwrite working directory
 const __filename = fileURLToPath(import.meta.url)
@@ -169,7 +170,7 @@ async function start(){
                         return
                     }else{
                         // BUG: Occasionally error will not fire but close will, saying it was unsuccessful. 
-                        reject("UNKNOWN, likely \"incomplete data received\"")
+                        reject("UNKNOWN, likely \"Incomplete data received.\"")
                     }
                 })
 

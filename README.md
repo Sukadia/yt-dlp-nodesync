@@ -3,10 +3,10 @@
 ### A Node application to sync your local files to your remote playlists, nest directories based on playlist name, and normalize their audio.
 
 ## Features
-- Syncs your local files to your remote playlists; deleting songs if they're no longer present.
-- Nest a configurable number of local directories when the playlist's name is formatted as `Folder1/Folder2/...`
+- Sync your local files to your remote playlists; deleting songs if they're no longer present.
+- Organize downloads into nested directories when the playlist's name is formatted as `Folder1/Folder2/...`
 - Concurrently download a configurable number of playlists at a time
-- Automatically normalize audio so tracks have a similar volume range
+- Automatically normalize audio so mp3 files have a similar volume range
 
 ## How To Use
 0. Ensure you have [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) installed.
